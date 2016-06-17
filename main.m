@@ -1,4 +1,4 @@
-%function [] = main()
+function [testing] = main()
 
 addpath 'First step'
 addpath 'Second_step'
