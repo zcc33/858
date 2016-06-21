@@ -21,8 +21,8 @@ r_rxns = find(discrete_rxns_vector==-1);
 s_rxns = find(discrete_rxns_vector==0);
 s_rxns(find(s_rxns==(find(model.c==1)))) = [];
 
-fwd = [intersect(find(v_ref >= 0),e_rxns)  intersect(find(v_ref < 0),r_rxns)];
-bck = [intersect(find(v_ref <= 0),e_rxns)  intersect(find(v_ref > 0),r_rxns)];
+fwd = [intersect(find(v_ref >= 0),e_rxns)'  intersect(find(v_ref < 0),r_rxns)'];
+bck = [intersect(find(v_ref <= 0),e_rxns)'  intersect(find(v_ref > 0),r_rxns)'];
 
 %Building the constraints matrix
 cons_rxns = [];

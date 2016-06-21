@@ -1,15 +1,17 @@
-function [discrete_rxns_vector, prc]=getDiscreteRxns(model, source, target, lower, upper, prc)
+function [discrete_rxns_vector]=getDiscreteRxns(model, source, target)
+%Input: the non-discretized source/target gene expression levels
+
 %output will be -1 if decrease, 0 if same, 1 if increase
 %change the prc (quantile) until get around 75-150 non-zero output entries
 %uses a binary search for the prc, assuming that the higher the prc, the
 %fewer non-zero entries we have, and the lower the prc, the more
  
 %what i want to get is around 100 non-zero output entries
-if nargin < 4
-    lower = 0;
-    upper = 1;
-    prc = 0.98;
-end
+
+lower = 0;
+upper = 1;
+prc = 0.98;
+
 
 discrete_rxns_vector = zeros(size(model.rxnNames));
 non_zero = sum(~(discrete_rxns_vector ==0));
