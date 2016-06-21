@@ -12,7 +12,7 @@
 %                    the reactions in rxns_to_delete
 %         2. stat -  The solver's returned status for each KO
 
-function [score,stat] = MTA(model,v_ref,discrete_rxns_vector,rxns_to_delete)
+function [score,stat, score_placebo, stat_placebo] = MTA(model,v_ref,discrete_rxns_vector,rxns_to_delete)
 
 alpha = 0.95;
 
@@ -89,9 +89,25 @@ end
 
 
 
-
-
-
+%%%%%%%%%%%%%%%%%%%%%%%
+%placebo (NO knock-out)
+%%%%%%%%%%%%%%%%%%%%%%%
+model.lb = LB;
+model.ub = UB;
+    
+%Performing the KO
+%model.lb(rxns_to_delete(i)) = 0;
+%model.ub(rxns_to_delete(i)) = 0;
+    
+%Running the optimization
+Res = RunTomlabMIQP(model,0);
+    
+stat_placebo= Res.result_status;
+    
+%Calculating the score
+[diff_change] = calculateDiff(v_ref,fwd,bck,cons_rxns,Res.result_vector);
+diff_steady = sum(abs(Res.result_vector(s_rxns)-v_ref(s_rxns)));
+score_placebo = diff_change/diff_steady;
 
 
 
