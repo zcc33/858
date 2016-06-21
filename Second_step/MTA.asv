@@ -67,6 +67,7 @@ LB = model.lb;
 UB = model.ub;
 
 for i=1:length(rxns_to_delete)
+    i
     model.lb = LB;
     model.ub = UB;
     

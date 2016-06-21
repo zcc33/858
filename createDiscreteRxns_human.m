@@ -1,4 +1,7 @@
-function [discrete_rxns_vector]=createDidscreteRxns_human(source, target, smean, tmean, model, stat)
+function [discrete_rxns_vector]=createDiscreteRxns_human(source, target, smean, tmean, model, stat)
+%make stat 0
+%output will be -1 if decrease, 0 if same, 1 if increase
+%change the prc (quantile) until get around 75-150 non-zero output entries
 
  %%source = smean, target=tmean
  
@@ -41,8 +44,8 @@ if stat ==0
     diff = abs(source - target);
     thr = quantile(diff , prc);
     
-    geneState(source - target>thr) = -1;
-    geneState(target - source>thr) = 1;
+    geneState((source - target)>thr) = -1;
+    geneState((target - source)>thr) = 1;
     
 end
     

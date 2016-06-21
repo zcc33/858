@@ -1,0 +1,11 @@
+function [rxns] = getRxnsToDelete(model, source, target) 
+%for use in MTA. get the set of reactions that are relevant, that are
+%candidates for deletion in the MTA run. returns a list of indices of
+%relevant reactions
+
+rxns1 = zeros(size(model.rxns))
+for i = 1:length(model.rxns)
+    rxns1[i] = evalExpRule2(model.rules{i}, source) | evalExpRule2(model.rules{i}, target)
+end
+
+rxns = zeros(

@@ -22,5 +22,5 @@ model.lb(inactive(inactive_rev)) = -INACTIVE_FLUX;
 model.lb(inactive(inactive_non_rev)) = 0;
 model.ub(inactive) = INACTIVE_FLUX;
 
-[sample_points]= model_sample(model, 2000);
+[sample_points]= model_sample(model, 1000);
 v_ref = mean(sample_points,2);
