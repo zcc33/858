@@ -19,23 +19,22 @@ load('data/master_healthy_d.mat');
 load('data/master_cancer_d.mat');
 
 %load the log file to see which samples already completed
-load('log.mat');
+load('data/log_progress.mat');
 
 %how many samples we need to go through
-num_samples = length(log);
+num_samples = length(log_progress);
 
 %go through the log and process each sample that hasn't already been
 %processed
 for i = 1:num_samples
-    load('log.mat');
     %if the sample is completed, say so
-    if log(i,1)
+    if log_progress(i,1)
         msg = ['Sample ' int2str(i) ' (out of ' int2str(num_samples) ') completed'];
         disp(msg);
     end
     
     %if the sample isn't completed, process it, save all data, then say so
-    if ~log(i,1)
+    if ~log_progress(i,1)
         
         %get the sample-specific data from the master data files
         healthy = master_healthy(:,i);
@@ -83,8 +82,8 @@ for i = 1:num_samples
         save(['data/' int2str(i) '/stat_placebo.mat'], 'stat_placebo');
         
         %now that the sample is done, log it and save log file
-        log(i,1) = 1;
-        save('log.mat', 'log');
+        log_progress(i,1) = 1;
+        save('data/log_progress.mat', 'log_progress');
         
         %print that this sample is done
         msg = ['Sample ' int2str(i) ' (out of ' int2str(num_samples) ') completed'];

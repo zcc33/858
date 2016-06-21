@@ -21,8 +21,8 @@ load('LUAD_data.mat');
 %create the data directory, a folder for each sample, and a log file for
 %all the samples telling us if it's not done (0) or done (1) processing
 mkdir('data')
-log = zeros(num_samples,1);
-save('log.mat', 'log')
+log_progress = zeros(num_samples,1);
+save('data/log_progress.mat', 'log_progress')
 for i = 1:num_samples
     mkdir('data',int2str(i));
 end
