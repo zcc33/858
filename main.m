@@ -27,7 +27,7 @@ num_samples = length(log);
 %go through the log and process each sample that hasn't already been
 %processed
 for i = 1:num_samples
-    
+    load('log.mat');
     %if the sample is completed, say so
     if log(i,1)
         msg = ['Sample ' int2str(i) ' (out of ' int2str(num_samples) ') completed'];
