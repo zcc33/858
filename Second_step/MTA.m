@@ -14,6 +14,8 @@
 
 function [score,stat] = MTA(model,v_ref,discrete_rxns_vector,rxns_to_delete)
 
+alpha = 0.95;
+
 DEFINE_PARAM;
 thr = 0.01; %threshold defining the the minimum required change for the integer constraints
 e_rxns = find(discrete_rxns_vector==1);
