@@ -26,11 +26,16 @@ num_samples = length(log_progress);
 
 %go through the log and process each sample that hasn't already been
 %processed
-for i = 1:num_samples
+i = 1;
+num_errors = 0;
+while i <= num_samples
     %if the sample is completed, say so
     if log_progress(i,1)
         msg = ['Sample ' int2str(i) ' (out of ' int2str(num_samples) ') completed'];
         disp(msg);
+        
+        %continue iteration
+        i = i+1;
     end
     
     %if the sample isn't completed, process it, save all data, then say so
@@ -70,23 +75,41 @@ for i = 1:num_samples
         msg = ['Sample ' int2str(i) ' has gotten (v_ref). Now beginning MTA...'];
         disp(msg);
         
-        %(4) run MTA to get the score and stat vectors
-        [score, stat, score_placebo, stat_placebo] = MTA(model, v_ref, discrete_rxns_vector, rxns_to_delete);
-        
-        %transpose to get row vectors and then save data
-        score = score';
-        stat = stat';
-        save(['data/' int2str(i) '/score.mat'], 'score');
-        save(['data/' int2str(i) '/stat.mat'], 'stat');
-        save(['data/' int2str(i) '/score_placebo.mat'], 'score_placebo');
-        save(['data/' int2str(i) '/stat_placebo.mat'], 'stat_placebo');
-        
-        %now that the sample is done, log it and save log file
-        log_progress(i,1) = 1;
-        save('data/log_progress.mat', 'log_progress');
-        
-        %print that this sample is done
-        msg = ['Sample ' int2str(i) ' (out of ' int2str(num_samples) ') completed'];
+        %print how many iterations this sample has undergone due to errors
+        msg = ['There have been ' int2str(num_errors) ' errors with this sample. Hoping this works...'];
         disp(msg);
+        
+        %THERE MAY BE ERRORS HERE
+        %"try" to do this if no errors
+        try
+            %(4) run MTA to get the score and stat vectors
+            [score, stat, score_placebo, stat_placebo] = MTA(model, v_ref, discrete_rxns_vector, rxns_to_delete);
+        
+            %transpose to get row vectors and then save data
+            score = score';
+            stat = stat';
+            save(['data/' int2str(i) '/score.mat'], 'score');
+            save(['data/' int2str(i) '/stat.mat'], 'stat');
+            save(['data/' int2str(i) '/score_placebo.mat'], 'score_placebo');
+            save(['data/' int2str(i) '/stat_placebo.mat'], 'stat_placebo');
+        
+            %now that the sample is done, log it and save log file
+            log_progress(i,1) = 1;
+            save('data/log_progress.mat', 'log_progress');
+        
+            %print that this sample is done
+            msg = ['Sample ' int2str(i) ' (out of ' int2str(num_samples) ') completed'];
+            disp(msg);
+            
+            %continue iteration
+            i = i+1;
+            
+        %if there are errors, then do this
+        catch
+            %no iterating, go back and do this sample AGAIN (hopefully no
+            %errors next time, since iMAT is non-deterministic
+            i=i;
+            num_errors = num_errors +1;
+        end
     end
 end
