@@ -28,7 +28,9 @@ num_samples = length(log_progress);
 %processed
 i = 1;
 num_errors = 0;
+
 while i < (num_samples+1)
+    
     %if the sample is completed, say so
     if log_progress(i,1) ==1
         msg = ['Sample ' int2str(i) ' (out of ' int2str(num_samples) ') completed'];
@@ -39,7 +41,7 @@ while i < (num_samples+1)
     end
     
     %if the sample was too error-riddled to continue, say so
-    if log_progress(i,1) ==1
+    if log_progress(i,1) ==2
         msg = ['Sample ' int2str(i) ' (out of ' int2str(num_samples) ') had too many ERRORS.'];
         disp(msg);
         
@@ -142,6 +144,8 @@ while i < (num_samples+1)
                 
                 %continue iteration
                 i = i+1;
+                %reset error tracker
+                num_errors = 0;
             end
         end
     end
