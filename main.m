@@ -51,7 +51,7 @@ while i < (num_samples+1)
         
     
     %if the sample isn't completed, process it, save all data, then say so
-    if log_progress == 0
+    if log_progress(i,1) == 0
         
         %get the sample-specific data from the master data files
         healthy = master_healthy(:,i);
