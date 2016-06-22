@@ -28,9 +28,9 @@ num_samples = length(log_progress);
 %processed
 i = 1;
 num_errors = 0;
-while i < (num_samples+1)
+while i <= num_samples
     %if the sample is completed, say so
-    if log_progress(i,1) ==1
+    if log_progress(i,1)
         msg = ['Sample ' int2str(i) ' (out of ' int2str(num_samples) ') completed'];
         disp(msg);
         
@@ -38,18 +38,8 @@ while i < (num_samples+1)
         i = i+1;
     end
     
-    %if the sample was too error-riddled to continue, say so
-    if log_progress(i,1) ==1
-        msg = ['Sample ' int2str(i) ' (out of ' int2str(num_samples) ') had too many ERRORS.'];
-        disp(msg);
-        
-        %continue iteration
-        i = i+1;
-    end
-        
-    
     %if the sample isn't completed, process it, save all data, then say so
-    if log_progress == 0
+    if ~log_progress(i,1)
         
         %get the sample-specific data from the master data files
         healthy = master_healthy(:,i);
@@ -123,7 +113,9 @@ while i < (num_samples+1)
             %errors next time, since iMAT is non-deterministic
             num_errors = num_errors +1;
             
-            if num_errors < 4
+            %BUT if there have been 3 or more errors, just continue and
+            %label that sample as having errors
+            if num_errors =< 3
                 
                 %print that this sample is not yet done
                 msg = ['Sample ' int2str(i) ' encountered error #' int2str(num_errors) '. We will retry...'];
@@ -131,8 +123,7 @@ while i < (num_samples+1)
                 
             else
                 
-                %BUT if there have been 3 or more errors, just continue and
-                %label that sample as having errors
+                %now that the sample is done, log it and save log file
                 log_progress(i,1) = 2;
                 save('data/log_progress.mat', 'log_progress');
         
