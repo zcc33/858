@@ -38,22 +38,19 @@ while i < (num_samples+1)
         
         %continue iteration
         i = i+1;
-        break;
-    end
     
     %if the sample was too error-riddled to continue, say so
-    if log_progress(i,1) ==2
+    elseif log_progress(i,1) ==2
         msg = ['Sample ' int2str(i) ' (out of ' int2str(num_samples) ') had too many ERRORS.'];
         disp(msg);
         
         %continue iteration
         i = i+1;
         break;
-    end
         
     
     %if the sample isn't completed, process it, save all data, then say so
-    if log_progress(i,1) == 0
+    elseif log_progress(i,1) == 0
         
         %get the sample-specific data from the master data files
         healthy = master_healthy(:,i);
@@ -150,6 +147,5 @@ while i < (num_samples+1)
                 num_errors = 0;
             end
         end
-        break;
     end
 end
