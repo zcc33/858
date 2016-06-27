@@ -38,6 +38,7 @@ while i < (num_samples+1)
         
         %continue iteration
         i = i+1;
+        break;
     end
     
     %if the sample was too error-riddled to continue, say so
@@ -47,6 +48,7 @@ while i < (num_samples+1)
         
         %continue iteration
         i = i+1;
+        break;
     end
         
     
@@ -148,5 +150,6 @@ while i < (num_samples+1)
                 num_errors = 0;
             end
         end
+        break;
     end
 end
